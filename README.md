@@ -15,10 +15,28 @@ Programa de reparto para Panaderia Josue, rehecho sin usuarios y con paginas sep
 - Guardado local en el navegador.
 - Vista de PC con tabla de reparto.
 - Vista de celular con tarjetas faciles de tocar.
+- Productos y clientes se agregan desde Configuracion.
+- Precio especial de pan y factura por cliente.
 - Clientes por dia con kg de pan, en contra, efectivo, MP, otros productos y observacion.
 - Cierre superior con Total vendido, Efectivo teorico, Efectivo real, Gastos, Diferencia y Deuda.
 - Boton **Nuevo dia +**.
 - Exportacion e importacion de respaldo en JSON.
+
+## Configuracion
+
+En Productos se cargan precios generales, por ejemplo Pan, Factura, Prepizzas o Pan rallado.
+
+En Clientes se cargan:
+
+- Nombre.
+- Direccion.
+- Kg habituales.
+- Precio especial pan, si ese cliente tiene otro precio.
+- Precio especial factura, si ese cliente tiene otro precio.
+- Limite de deuda.
+- Lugar en la lista.
+
+Si el precio especial queda vacio o en 0, Reparto usa el precio general del producto.
 
 ## Formulas principales
 
