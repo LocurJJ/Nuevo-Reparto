@@ -214,11 +214,12 @@ function agregarCliente(event) {
 }
 
 function cambiarVista(vista) {
-  estado.vista = vista;
-  el.vistaPc.classList.toggle("activo", vista === "pc");
-  el.vistaCelular.classList.toggle("activo", vista === "celular");
-  el.vistaTabla.hidden = vista !== "pc";
-  el.vistaTarjetas.hidden = vista !== "celular";
+  const vistaFinal = window.matchMedia("(max-width: 640px)").matches ? "celular" : vista;
+  estado.vista = vistaFinal;
+  el.vistaPc.classList.toggle("activo", vistaFinal === "pc");
+  el.vistaCelular.classList.toggle("activo", vistaFinal === "celular");
+  el.vistaTabla.hidden = vistaFinal !== "pc";
+  el.vistaTarjetas.hidden = vistaFinal !== "celular";
   guardar();
 }
 
