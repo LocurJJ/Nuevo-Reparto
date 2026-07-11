@@ -4,62 +4,70 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Configuracion - Panaderia Josue</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body data-page="configuracion">
   <header class="hero">
     <div>
       <p class="subtitulo">Sistema de reparto</p>
-      <h1>Configuracion</h1>
-      <p class="usuario"><a href="index.html">Inicio</a> · <a href="reparto.html">Reparto</a> · <a href="reportes.html">Reportes</a></p>
+      <h1>Panaderia Josue</h1>
+      <p class="usuario">Usuario: Josue</p>
     </div>
   </header>
 
-  <main class="contenedor config-grid">
-    <section class="tarjeta config-card">
-      <div class="encabezado-seccion">
-        <div>
-          <h2>Productos</h2>
-          <p>Modifica precios. Pan y factura se usan directo en los calculos del reparto.</p>
-        </div>
-      </div>
-      <form id="formProducto" class="form-config">
-        <input id="productoId" type="hidden">
-        <label>Producto <input id="productoNombre" required placeholder="Ej: Pan"></label>
-        <label>Precio <input id="productoPrecio" type="number" min="0" step="1" required placeholder="0"></label>
-        <button class="principal" type="submit">Guardar producto</button>
-      </form>
-      <div class="tabla-scroll">
-        <table>
-          <thead><tr><th>Producto</th><th>Precio</th><th>Acciones</th></tr></thead>
-          <tbody id="tablaProductos"></tbody>
-        </table>
-      </div>
-    </section>
+  <main class="contenedor">
+    <nav class="menu-principal menu-compacto" aria-label="Menu principal">
+      <button class="menu-card deshabilitado" type="button" disabled><span>Usuario</span></button>
+      <a class="menu-card" href="reparto.html"><span>Reparto</span></a>
+      <a class="menu-card destacado activo-menu" href="configuracion.html"><span>Configuracion</span></a>
+      <a class="menu-card destacado" href="reportes.html"><span>Reportes</span></a>
+    </nav>
 
-    <section class="tarjeta config-card">
-      <div class="encabezado-seccion">
-        <div>
-          <h2>Clientes</h2>
-          <p>Lista base. Al crear un dia nuevo se copian estos nombres y sus kg habituales si el dia anterior no existe.</p>
-        </div>
+    <section class="tarjeta config-shell">
+      <h2>Configuracion</h2>
+      <div class="config-grid">
+        <section>
+          <h3>Productos</h3>
+          <form id="formProducto" class="form-config form-config-vertical">
+            <input id="productoId" type="hidden">
+            <label>Producto <input id="productoNombre" required placeholder="Pan"></label>
+            <label>Precio <input id="productoPrecio" type="number" min="0" step="1" required placeholder="2200"></label>
+            <label class="check-line"><input id="productoPesable" type="checkbox"> Pesable</label>
+            <button class="principal" type="submit">Guardar producto</button>
+          </form>
+          <div class="tabla-scroll">
+            <table>
+              <thead><tr><th>Producto</th><th>Precio</th><th>Tipo</th><th>Editar</th></tr></thead>
+              <tbody id="tablaProductos"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h3>Clientes</h3>
+          <form id="formClienteConfig" class="form-config form-config-vertical">
+            <input id="clienteConfigId" type="hidden">
+            <label>Nombre <input id="clienteConfigNombre" required placeholder="Nombre del cliente"></label>
+            <label>Direccion <input id="clienteConfigDireccion" placeholder="Calle 123"></label>
+            <label>Kg habituales <input id="clienteConfigKg" type="number" min="0" step="0.01" placeholder="0"></label>
+            <label>Precio especial pan <input id="clienteConfigPrecioPan" type="number" min="0" step="1" placeholder="Vacio usa general"></label>
+            <label>Precio especial factura <input id="clienteConfigPrecioFactura" type="number" min="0" step="1" placeholder="Vacio usa general"></label>
+            <label>Limite de deuda <input id="clienteConfigLimite" type="number" min="0" step="1" placeholder="30000"></label>
+            <label>Lugar en la lista <input id="clienteConfigOrden" type="number" min="1" step="1" placeholder="1"></label>
+            <button class="principal" type="submit">Guardar cliente</button>
+          </form>
+        </section>
       </div>
-      <form id="formClienteConfig" class="form-config clientes-config-form">
-        <input id="clienteConfigId" type="hidden">
-        <label>Nombre <input id="clienteConfigNombre" required placeholder="Nombre del cliente"></label>
-        <label>Kg habituales <input id="clienteConfigKg" type="number" min="0" step="0.01" placeholder="0"></label>
-        <label>Orden <input id="clienteConfigOrden" type="number" min="1" step="1" placeholder="1"></label>
-        <button class="principal" type="submit">Guardar cliente</button>
-      </form>
-      <div class="tabla-scroll">
+
+      <div class="tabla-scroll clientes-config-tabla">
         <table>
-          <thead><tr><th>Nombre</th><th>Kg</th><th>Orden</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Nombre</th><th>Direccion</th><th>Kg</th><th>Pan esp.</th><th>Factura esp.</th><th>Limite</th><th>Lugar</th><th>Acciones</th></tr></thead>
           <tbody id="tablaClientesConfig"></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
