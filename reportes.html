@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reportes - Panaderia Josue</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="reportes">
+  <header class="hero">
+    <div>
+      <p class="subtitulo">Sistema de reparto</p>
+      <h1>Reportes</h1>
+      <p class="usuario"><a href="index.html">Inicio</a> · <a href="reparto.html">Reparto</a> · <a href="configuracion.html">Configuracion</a></p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section id="bloqueClave" class="tarjeta login-reportes">
+      <h2>Ingresar a reportes</h2>
+      <form id="formClave" class="form-clave">
+        <label>Contrasena
+          <input id="claveReportes" type="password" inputmode="numeric" autocomplete="current-password" required placeholder="Ingrese contrasena">
+        </label>
+        <button class="principal" type="submit">Entrar</button>
+      </form>
+      <p id="errorClave" class="error-clave" hidden>Contrasena incorrecta.</p>
+    </section>
+
+    <section id="panelReportes" class="tarjeta reportes-panel" hidden>
+      <div class="encabezado-seccion">
+        <div>
+          <h2>Estadisticas</h2>
+          <p>Resumen armado con todos los dias guardados en este navegador.</p>
+        </div>
+        <button id="salirReportes" type="button">Cerrar reportes</button>
+      </div>
+
+      <section class="resumen reportes-resumen">
+        <article><span>Dias guardados</span><strong id="repDias">0</strong></article>
+        <article><span>Total vendido</span><strong id="repVendido">$ 0</strong></article>
+        <article><span>Efectivo</span><strong id="repEfectivo">$ 0</strong></article>
+        <article><span>MP</span><strong id="repMp">$ 0</strong></article>
+        <article><span>Gastos</span><strong id="repGastos">$ 0</strong></article>
+        <article><span>Deuda actual</span><strong id="repDeuda">$ 0</strong></article>
+      </section>
+
+      <div class="tabla-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Dia</th>
+              <th>Total vendido</th>
+              <th>Efectivo teorico</th>
+              <th>Efectivo real</th>
+              <th>MP</th>
+              <th>Gastos</th>
+              <th>Diferencia</th>
+              <th>Deuda</th>
+            </tr>
+          </thead>
+          <tbody id="tablaReportes"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
