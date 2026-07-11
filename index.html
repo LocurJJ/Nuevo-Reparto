@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nuevo Reparto</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Sistema de reparto</p>
+      <h1>Nuevo Reparto</h1>
+    </div>
+    <nav class="view-switch" aria-label="Cambiar vista">
+      <button id="desktopViewBtn" class="active" type="button">PC</button>
+      <button id="mobileViewBtn" type="button">Celular</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="panel form-panel" aria-labelledby="formTitle">
+      <div class="section-title">
+        <h2 id="formTitle">Cargar reparto</h2>
+        <button id="clearFormBtn" class="ghost" type="button">Limpiar</button>
+      </div>
+
+      <form id="deliveryForm" class="delivery-form">
+        <input type="hidden" id="deliveryId">
+        <label>Cliente
+          <input id="client" name="client" required placeholder="Nombre del cliente">
+        </label>
+        <label>Direccion
+          <input id="address" name="address" required placeholder="Calle, numero, barrio">
+        </label>
+        <label>Telefono
+          <input id="phone" name="phone" inputmode="tel" placeholder="Ej: 11 5555-5555">
+        </label>
+        <label>Zona
+          <input id="zone" name="zone" placeholder="Centro, Norte, Sur...">
+        </label>
+        <label>Detalle del pedido
+          <input id="details" name="details" placeholder="Bolsas, producto, aclaraciones">
+        </label>
+        <label>Repartidor / movil
+          <input id="driver" name="driver" placeholder="Opcional">
+        </label>
+        <label>Importe
+          <input id="amount" name="amount" type="number" min="0" step="0.01" placeholder="0">
+        </label>
+        <label>Forma de pago
+          <select id="payment" name="payment">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Cuenta corriente">Cuenta corriente</option>
+          </select>
+        </label>
+        <label>Estado
+          <select id="status" name="status">
+            <option value="Pendiente">Pendiente</option>
+            <option value="En camino">En camino</option>
+            <option value="Entregado">Entregado</option>
+            <option value="No entregado">No entregado</option>
+          </select>
+        </label>
+        <label class="wide">Notas
+          <textarea id="notes" name="notes" rows="3" placeholder="Horarios, referencias, cambios"></textarea>
+        </label>
+        <button class="primary wide" type="submit">Guardar reparto</button>
+      </form>
+    </section>
+
+    <section class="workspace">
+      <section class="stats" aria-label="Resumen">
+        <article><span id="totalCount">0</span><small>Total</small></article>
+        <article><span id="pendingCount">0</span><small>Pendientes</small></article>
+        <article><span id="routeCount">0</span><small>En camino</small></article>
+        <article><span id="deliveredCount">0</span><small>Entregados</small></article>
+        <article><span id="totalAmount">$0</span><small>Importe</small></article>
+      </section>
+
+      <section class="tools" aria-label="Herramientas">
+        <input id="searchInput" placeholder="Buscar cliente, direccion, zona o repartidor">
+        <select id="statusFilter">
+          <option value="Todos">Todos los estados</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En camino">En camino</option>
+          <option value="Entregado">Entregado</option>
+          <option value="No entregado">No entregado</option>
+        </select>
+        <button id="exportBtn" type="button">Exportar</button>
+        <label class="import-btn">Importar
+          <input id="importInput" type="file" accept="application/json">
+        </label>
+      </section>
+
+      <section id="desktopView" class="desktop-view" aria-labelledby="desktopTitle">
+        <h2 id="desktopTitle">Planilla de repartos</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Estado</th>
+                <th>Cliente</th>
+                <th>Direccion</th>
+                <th>Zona</th>
+                <th>Repartidor</th>
+                <th>Importe</th>
+                <th>Pago</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="deliveryTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="mobileView" class="mobile-view" aria-labelledby="mobileTitle" hidden>
+        <h2 id="mobileTitle">Vista para celular</h2>
+        <div id="deliveryCards" class="cards"></div>
+      </section>
+    </section>
+  </main>
+
+  <template id="emptyTemplate">
+    <div class="empty-state">
+      <h3>No hay repartos para mostrar</h3>
+      <p>Carga uno nuevo o cambia el filtro.</p>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
