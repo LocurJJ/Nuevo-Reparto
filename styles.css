@@ -25,6 +25,8 @@ body {
 button, input, textarea { font: inherit; }
 button { cursor: pointer; }
 
+[hidden] { display: none !important; }
+
 .hero {
   max-width: 1180px;
   margin: 0 auto;
@@ -247,8 +249,7 @@ td {
   .contenedor { padding: 0 10px; }
   .reparto-card { padding: 10px; }
   .modo-vista { display: none; }
-  #vistaTabla { display: none; }
-  #vistaTarjetas[hidden] { display: grid; }
+  #vistaTabla { display: none !important; }
   .acciones-dia, .resumen { grid-template-columns: 1fr; }
   .card-totales, .card-grid { grid-template-columns: 1fr; }
 }
