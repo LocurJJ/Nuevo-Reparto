@@ -1,5 +1,5 @@
-const STORAGE_KEY = "panaderia-josue-reparto-v4";
-const OLD_KEYS = ["panaderia-josue-reparto-v3", "panaderia-josue-reparto-v2", "nuevo-reparto-v1"];
+const STORAGE_KEY = "panaderia-josue-reparto-v5";
+const OLD_KEYS = ["panaderia-josue-reparto-v4", "panaderia-josue-reparto-v3", "panaderia-josue-reparto-v2", "nuevo-reparto-v1"];
 const REPORT_PASSWORD = "43315685";
 const hoy = new Date().toISOString().slice(0, 10);
 const page = document.body.dataset.page || "inicio";
@@ -31,7 +31,7 @@ function normalizarEstado(data) {
     fechaActual: data.fechaActual || hoy,
     vista: data.vista || "pc",
     config: {
-      products: products.map(normalizarProducto),
+      products: products.map(normalizarProducto).filter(producto => !["prepizzas", "panRallado", "panMiga"].includes(producto.id)),
       clients: clients.length ? clients.map(normalizarClienteConfig) : clientesBase()
     },
     dias: data.dias || {}
@@ -50,9 +50,6 @@ function productosBase(config = {}) {
   return [
     { id: "pan", nombre: "Pan", precio: numero(config.precioPan || 2200), pesable: true, fijo: true },
     { id: "factura", nombre: "Factura", precio: numero(config.precioFactura || 0), pesable: false, fijo: true },
-    { id: "prepizzas", nombre: "Prepizzas", precio: 0, pesable: false, fijo: true },
-    { id: "panRallado", nombre: "Pan rallado", precio: 0, pesable: true, fijo: true },
-    { id: "panMiga", nombre: "Pan para miga", precio: 0, pesable: false, fijo: true },
     { id: "otros", nombre: "Otros", precio: 0, pesable: false, fijo: true }
   ];
 }
@@ -97,6 +94,7 @@ function normalizarClienteConfig(cliente) {
 }
 
 function normalizarClienteReparto(cliente) {
+  const extrasViejos = numero(cliente.prepizzas) + numero(cliente.panRallado) + numero(cliente.panMiga);
   return {
     id: cliente.id || crypto.randomUUID(),
     configId: cliente.configId || "",
@@ -106,11 +104,8 @@ function normalizarClienteReparto(cliente) {
     enContra: numero(cliente.enContra),
     efectivo: numero(cliente.efectivo),
     mp: numero(cliente.mp),
-    otros: numero(cliente.otros),
+    otros: numero(cliente.otros) + extrasViejos,
     facturas: numero(cliente.facturas),
-    prepizzas: numero(cliente.prepizzas),
-    panRallado: numero(cliente.panRallado),
-    panMiga: numero(cliente.panMiga),
     observacion: cliente.observacion || ""
   };
 }
@@ -233,26 +228,23 @@ function iniciarReparto() {
 
   function renderTabla() {
     const clientes = diaActual().clientes;
-    el.tablaClientes.innerHTML = clientes.length ? "" : '<tr><td class="vacio" colspan="14">No hay clientes. Agregalos desde Configuracion.</td></tr>';
+    el.tablaClientes.innerHTML = clientes.length ? "" : '<tr><td class="vacio" colspan="11">No hay clientes. Agregalos desde Configuracion.</td></tr>';
     clientes.forEach(cliente => {
       const calc = calcularCliente(cliente);
       const config = configClientePara(cliente);
       const fila = document.createElement("tr");
       fila.innerHTML = `
-        <td class="celda-nombre"><input data-campo="nombre" value="${attr(cliente.nombre)}" title="${attr(config?.direccion || "")}"></td>
-        <td><input data-campo="kg" type="number" min="0" step="0.01" value="${cliente.kg}"></td>
-        <td><input data-campo="enContra" type="number" step="1" value="${cliente.enContra}"></td>
+        <td class="celda-nombre"><button class="nombre-pago" type="button" title="Cargar efectivo${config?.direccion ? ` - ${attr(config.direccion)}` : ""}">${esc(cliente.nombre)}</button></td>
+        <td class="celda-kg"><input data-campo="kg" type="number" min="0" step="0.01" value="${cliente.kg}"></td>
         <td class="celda-debe">${moneda(calc.debe)}</td>
-        <td><input data-campo="efectivo" type="number" min="0" step="1" value="${cliente.efectivo}"></td>
-        <td><input data-campo="mp" type="number" min="0" step="1" value="${cliente.mp}"></td>
+        <td class="celda-efectivo"><input data-campo="efectivo" type="number" min="0" step="1" value="${cliente.efectivo}"></td>
+        <td class="celda-mp"><input data-campo="mp" type="number" min="0" step="1" value="${cliente.mp}"></td>
         <td class="celda-cuenta ${calc.cuenta > 0 ? "cuenta-deuda" : ""}">${moneda(calc.cuenta)}</td>
-        <td><input data-campo="otros" type="number" min="0" step="1" value="${cliente.otros}"></td>
-        <td><input data-campo="facturas" type="number" min="0" step="1" value="${cliente.facturas}"></td>
-        <td><input data-campo="prepizzas" type="number" min="0" step="1" value="${cliente.prepizzas}"></td>
-        <td><input data-campo="panRallado" type="number" min="0" step="1" value="${cliente.panRallado}"></td>
-        <td><input data-campo="panMiga" type="number" min="0" step="1" value="${cliente.panMiga}"></td>
-        <td><textarea data-campo="observacion">${esc(cliente.observacion)}</textarea></td>
-        <td><button class="eliminar" type="button">Borrar</button></td>`;
+        <td class="celda-otros"><input data-campo="otros" type="number" min="0" step="1" value="${cliente.otros}"></td>
+        <td class="celda-facturas"><input data-campo="facturas" type="number" min="0" step="1" value="${cliente.facturas}"></td>
+        <td class="celda-observacion"><textarea data-campo="observacion">${esc(cliente.observacion)}</textarea></td>
+        <td class="celda-en-contra"><input data-campo="enContra" type="number" step="1" value="${cliente.enContra}"></td>
+        <td class="celda-borrar"><button class="eliminar" type="button">Borrar</button></td>`;
       conectarFila(fila, cliente, render);
       el.tablaClientes.append(fila);
     });
@@ -267,24 +259,33 @@ function iniciarReparto() {
       const card = document.createElement("article");
       card.className = "cliente-card";
       card.innerHTML = `
-        <div class="card-head"><input data-campo="nombre" value="${attr(cliente.nombre)}"><button class="eliminar" type="button">Borrar</button></div>
+        <div class="card-head"><button class="nombre-pago" type="button">${esc(cliente.nombre)}</button><button class="eliminar" type="button">Borrar</button></div>
         ${config?.direccion ? `<p class="card-direccion">${esc(config.direccion)}</p>` : ""}
         <div class="card-totales"><div><span>Debe</span><strong>${moneda(calc.debe)}</strong></div><div><span>Cuenta</span><strong class="${calc.cuenta > 0 ? "negativo" : "positivo"}">${moneda(calc.cuenta)}</strong></div><div><span>En contra</span><strong>${moneda(cliente.enContra)}</strong></div></div>
-        <div class="card-grid">${inputCard("Kg", "kg", cliente.kg, "0.01")}${inputCard("Efectivo", "efectivo", cliente.efectivo)}${inputCard("MP", "mp", cliente.mp)}${inputCard("Otros", "otros", cliente.otros)}${inputCard("Facturas", "facturas", cliente.facturas)}${inputCard("Prepizzas", "prepizzas", cliente.prepizzas)}${inputCard("Pan rallado", "panRallado", cliente.panRallado)}${inputCard("Pan para miga", "panMiga", cliente.panMiga)}<label class="card-wide">Observacion<textarea data-campo="observacion">${esc(cliente.observacion)}</textarea></label></div>`;
+        <div class="card-grid">${inputCard("Kg", "kg", cliente.kg, "0.01")}${inputCard("Efectivo", "efectivo", cliente.efectivo)}${inputCard("MP", "mp", cliente.mp)}${inputCard("Otros", "otros", cliente.otros)}${inputCard("Facturas", "facturas", cliente.facturas)}${inputCard("En contra", "enContra", cliente.enContra)}<label class="card-wide">Observacion<textarea data-campo="observacion">${esc(cliente.observacion)}</textarea></label></div>`;
       conectarFila(card, cliente, render);
       el.vistaTarjetas.append(card);
     });
+  }
+
+  function cargarEfectivoRapido(cliente, rerender) {
+    const valor = prompt(`Cuanto pago en efectivo ${cliente.nombre}?`, cliente.efectivo || "");
+    if (valor === null) return;
+    cliente.efectivo = numero(valor);
+    guardar();
+    rerender();
   }
 
   function conectarFila(contenedor, cliente, rerender) {
     contenedor.querySelectorAll("input[data-campo], textarea[data-campo]").forEach(input => {
       input.addEventListener("input", () => {
         const campo = input.dataset.campo;
-        cliente[campo] = campo === "nombre" || campo === "observacion" ? input.value : numero(input.value);
+        cliente[campo] = campo === "observacion" ? input.value : numero(input.value);
         guardar(); renderResumen();
       });
       input.addEventListener("change", rerender);
     });
+    contenedor.querySelector(".nombre-pago").addEventListener("click", () => cargarEfectivoRapido(cliente, rerender));
     contenedor.querySelector("button.eliminar").addEventListener("click", () => {
       if (!confirm("Borrar este cliente del dia?")) return;
       diaActual().clientes = diaActual().clientes.filter(item => item.id !== cliente.id);
@@ -422,7 +423,7 @@ function calcularDia(dia) {
 function calcularCliente(cliente) {
   const pan = numero(cliente.kg) * precioCliente(cliente, "pan");
   const facturas = numero(cliente.facturas) * precioCliente(cliente, "factura");
-  const ventaDia = pan + facturas + numero(cliente.otros) + numero(cliente.prepizzas) + numero(cliente.panRallado) + numero(cliente.panMiga);
+  const ventaDia = pan + facturas + numero(cliente.otros);
   const debe = ventaDia + numero(cliente.enContra);
   const cuenta = debe - numero(cliente.efectivo) - numero(cliente.mp);
   return { pan, facturas, ventaDia, debe, cuenta };
