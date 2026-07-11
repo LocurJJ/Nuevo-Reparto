@@ -95,8 +95,22 @@ textarea { resize: vertical; min-height: 38px; }
 table { width: 100%; border-collapse: collapse; }
 th { background: #3b73bf; color: #fff; font-size: 11px; text-align: left; padding: 8px; white-space: nowrap; }
 td { border: 1px solid #c7d5ea; background: #eaf2ff; padding: 6px; vertical-align: middle; }
+.tabla-reparto { min-width: 1050px; table-layout: fixed; }
+.tabla-reparto th:nth-child(1), .tabla-reparto td:nth-child(1) { width: 150px; }
+.tabla-reparto th:nth-child(2), .tabla-reparto td:nth-child(2) { width: 72px; }
+.tabla-reparto th:nth-child(3), .tabla-reparto td:nth-child(3) { width: 95px; }
+.tabla-reparto th:nth-child(4), .tabla-reparto td:nth-child(4) { width: 88px; }
+.tabla-reparto th:nth-child(5), .tabla-reparto td:nth-child(5) { width: 88px; }
+.tabla-reparto th:nth-child(6), .tabla-reparto td:nth-child(6) { width: 95px; }
+.tabla-reparto th:nth-child(7), .tabla-reparto td:nth-child(7) { width: 88px; }
+.tabla-reparto th:nth-child(8), .tabla-reparto td:nth-child(8) { width: 76px; }
+.tabla-reparto th:nth-child(9), .tabla-reparto td:nth-child(9) { width: 150px; }
+.tabla-reparto th:nth-child(10), .tabla-reparto td:nth-child(10) { width: 96px; }
+.tabla-reparto th:nth-child(11), .tabla-reparto td:nth-child(11) { width: 72px; }
 .tabla-reparto input, .tabla-reparto textarea { min-height: 34px; padding: 6px 8px; font-size: 13px; }
-.celda-nombre input { font-weight: 900; }
+.celda-nombre .nombre-pago { width: 100%; min-height: 34px; border: 1px solid var(--linea); border-radius: 5px; background: #fff; color: var(--texto); font-size: 13px; font-weight: 900; text-align: left; padding: 6px 8px; white-space: normal; line-height: 1.2; }
+.celda-nombre .nombre-pago:hover { border-color: var(--azul); color: var(--azul); }
+.celda-kg input, .celda-mp input, .celda-efectivo input, .celda-en-contra input { min-width: 100%; }
 .celda-debe { color: var(--rojo); font-weight: 900; white-space: nowrap; }
 .celda-cuenta { color: var(--verde); font-weight: 900; white-space: nowrap; }
 .cuenta-deuda { color: var(--rojo); }
@@ -107,7 +121,7 @@ td { border: 1px solid #c7d5ea; background: #eaf2ff; padding: 6px; vertical-alig
 .vista-tarjetas { display: grid; gap: 12px; }
 .cliente-card { border: 1px solid var(--linea); border-radius: 8px; background: #fff; padding: 12px; display: grid; gap: 10px; }
 .card-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
-.card-head input { font-size: 18px; font-weight: 900; }
+.card-head .nombre-pago { flex: 1; min-height: 44px; border: 1px solid var(--linea); border-radius: 6px; background: #fff; text-align: left; padding: 8px 10px; font-size: 18px; font-weight: 900; }
 .card-direccion { margin: 0; color: var(--muted); font-weight: 800; }
 .card-totales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .card-totales div { border: 1px solid var(--linea); border-radius: 6px; padding: 8px; background: #f8fbff; }
