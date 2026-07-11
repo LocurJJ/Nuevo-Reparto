@@ -3,132 +3,110 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nuevo Reparto</title>
+  <title>Reparto - Panaderia Josue</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
+  <header class="hero">
     <div>
-      <p class="eyebrow">Sistema de reparto</p>
-      <h1>Nuevo Reparto</h1>
+      <p class="subtitulo">Sistema de reparto</p>
+      <h1>Panaderia Josue</h1>
+      <p class="usuario">Sin usuarios: todos los datos quedan juntos en este navegador</p>
     </div>
-    <nav class="view-switch" aria-label="Cambiar vista">
-      <button id="desktopViewBtn" class="active" type="button">PC</button>
-      <button id="mobileViewBtn" type="button">Celular</button>
+    <nav class="modo-vista" aria-label="Vista">
+      <button id="vistaPc" class="activo" type="button">PC</button>
+      <button id="vistaCelular" type="button">Celular</button>
     </nav>
   </header>
 
-  <main class="layout">
-    <section class="panel form-panel" aria-labelledby="formTitle">
-      <div class="section-title">
-        <h2 id="formTitle">Cargar reparto</h2>
-        <button id="clearFormBtn" class="ghost" type="button">Limpiar</button>
+  <main class="contenedor">
+    <section class="tarjeta reparto-card">
+      <div class="encabezado-seccion">
+        <div>
+          <h2>Clientes del dia</h2>
+          <p>Edita kilos, pagos y productos. Las cuentas se recalculan solas.</p>
+        </div>
+        <div class="acciones-dia">
+          <label>Dia de reparto
+            <input id="fechaReparto" type="date">
+          </label>
+          <button id="nuevoDia" class="principal" type="button">Nuevo dia +</button>
+          <button id="exportar" type="button">Exportar</button>
+          <label class="boton-archivo">Importar
+            <input id="importar" type="file" accept="application/json">
+          </label>
+        </div>
       </div>
 
-      <form id="deliveryForm" class="delivery-form">
-        <input type="hidden" id="deliveryId">
-        <label>Cliente
-          <input id="client" name="client" required placeholder="Nombre del cliente">
-        </label>
-        <label>Direccion
-          <input id="address" name="address" required placeholder="Calle, numero, barrio">
-        </label>
-        <label>Telefono
-          <input id="phone" name="phone" inputmode="tel" placeholder="Ej: 11 5555-5555">
-        </label>
-        <label>Zona
-          <input id="zone" name="zone" placeholder="Centro, Norte, Sur...">
-        </label>
-        <label>Detalle del pedido
-          <input id="details" name="details" placeholder="Bolsas, producto, aclaraciones">
-        </label>
-        <label>Repartidor / movil
-          <input id="driver" name="driver" placeholder="Opcional">
-        </label>
-        <label>Importe
-          <input id="amount" name="amount" type="number" min="0" step="0.01" placeholder="0">
-        </label>
-        <label>Forma de pago
-          <select id="payment" name="payment">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Transferencia">Transferencia</option>
-            <option value="Tarjeta">Tarjeta</option>
-            <option value="Cuenta corriente">Cuenta corriente</option>
-          </select>
-        </label>
-        <label>Estado
-          <select id="status" name="status">
-            <option value="Pendiente">Pendiente</option>
-            <option value="En camino">En camino</option>
-            <option value="Entregado">Entregado</option>
-            <option value="No entregado">No entregado</option>
-          </select>
-        </label>
-        <label class="wide">Notas
-          <textarea id="notes" name="notes" rows="3" placeholder="Horarios, referencias, cambios"></textarea>
-        </label>
-        <button class="primary wide" type="submit">Guardar reparto</button>
-      </form>
-    </section>
-
-    <section class="workspace">
-      <section class="stats" aria-label="Resumen">
-        <article><span id="totalCount">0</span><small>Total</small></article>
-        <article><span id="pendingCount">0</span><small>Pendientes</small></article>
-        <article><span id="routeCount">0</span><small>En camino</small></article>
-        <article><span id="deliveredCount">0</span><small>Entregados</small></article>
-        <article><span id="totalAmount">$0</span><small>Importe</small></article>
+      <section class="resumen" aria-label="Reporte del dia">
+        <article><span>Total vendido</span><strong id="totalVendido">$ 0</strong></article>
+        <article><span>Efectivo teorico</span><strong id="efectivoTeorico">$ 0</strong></article>
+        <article class="editable"><span>Efectivo real</span><input id="efectivoReal" type="number" min="0" step="1" placeholder="0"></article>
+        <article><span>Gastos</span><strong id="totalGastos">$ 0</strong></article>
+        <article><span>Diferencia</span><strong id="diferencia">$ 0</strong></article>
+        <article><span>Deuda</span><strong id="deudaTotal">$ 0</strong></article>
       </section>
 
-      <section class="tools" aria-label="Herramientas">
-        <input id="searchInput" placeholder="Buscar cliente, direccion, zona o repartidor">
-        <select id="statusFilter">
-          <option value="Todos">Todos los estados</option>
-          <option value="Pendiente">Pendiente</option>
-          <option value="En camino">En camino</option>
-          <option value="Entregado">Entregado</option>
-          <option value="No entregado">No entregado</option>
-        </select>
-        <button id="exportBtn" type="button">Exportar</button>
-        <label class="import-btn">Importar
-          <input id="importInput" type="file" accept="application/json">
-        </label>
-      </section>
-
-      <section id="desktopView" class="desktop-view" aria-labelledby="desktopTitle">
-        <h2 id="desktopTitle">Planilla de repartos</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Estado</th>
-                <th>Cliente</th>
-                <th>Direccion</th>
-                <th>Zona</th>
-                <th>Repartidor</th>
-                <th>Importe</th>
-                <th>Pago</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="deliveryTable"></tbody>
+      <section class="cierre">
+        <div>
+          <h3>Gastos y cierre en efectivo</h3>
+          <p id="formulaCierre">Efectivo teorico: $ 0 - Gastos: $ 0 - Esperado: $ 0</p>
+        </div>
+        <form id="formGasto" class="form-gasto">
+          <label>Detalle del gasto
+            <input id="detalleGasto" placeholder="Ej: combustible, bolsas, aceite">
+          </label>
+          <label>Monto
+            <input id="montoGasto" type="number" min="0" step="1" placeholder="0">
+          </label>
+          <button class="principal" type="submit">Anadir gasto</button>
+        </form>
+        <div class="tabla-scroll gastos-scroll">
+          <table class="tabla-gastos">
+            <thead><tr><th>Gasto</th><th>Monto</th><th>Accion</th></tr></thead>
+            <tbody id="tablaGastos"></tbody>
           </table>
         </div>
       </section>
 
-      <section id="mobileView" class="mobile-view" aria-labelledby="mobileTitle" hidden>
-        <h2 id="mobileTitle">Vista para celular</h2>
-        <div id="deliveryCards" class="cards"></div>
+      <section class="barra-herramientas">
+        <form id="formCliente" class="form-cliente">
+          <input id="nuevoClienteNombre" placeholder="Nombre del cliente" required>
+          <input id="nuevoClienteKg" type="number" min="0" step="0.01" placeholder="Kg pan">
+          <button class="principal" type="submit">Agregar cliente</button>
+        </form>
+        <div class="precios">
+          <label>Precio kg pan <input id="precioPan" type="number" min="0" step="1"></label>
+          <label>Precio factura <input id="precioFactura" type="number" min="0" step="1"></label>
+        </div>
       </section>
+
+      <section id="vistaTabla" class="tabla-scroll">
+        <table class="tabla-reparto">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Kg</th>
+              <th>Debe</th>
+              <th>Pan</th>
+              <th>MP</th>
+              <th>Cuenta</th>
+              <th>Otros</th>
+              <th>Fact.</th>
+              <th>Prepizzas</th>
+              <th>Pan rallado</th>
+              <th>Pan para miga</th>
+              <th>Observacion</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tablaClientes"></tbody>
+        </table>
+      </section>
+
+      <section id="vistaTarjetas" class="vista-tarjetas" hidden></section>
     </section>
   </main>
-
-  <template id="emptyTemplate">
-    <div class="empty-state">
-      <h3>No hay repartos para mostrar</h3>
-      <p>Carga uno nuevo o cambia el filtro.</p>
-    </div>
-  </template>
 
   <script src="app.js"></script>
 </body>
