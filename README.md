@@ -1,13 +1,20 @@
 # Nuevo Reparto
 
-Programa de reparto para Panaderia Josue, rehecho sin usuarios y centrado en la tabla diaria de clientes.
+Programa de reparto para Panaderia Josue, rehecho sin usuarios y con paginas separadas.
+
+## Paginas
+
+- `index.html`: inicio con botones principales.
+- `reparto.html`: tabla diaria de clientes, pagos, gastos y nuevo dia.
+- `configuracion.html`: productos, precios y clientes base.
+- `reportes.html`: estadisticas protegidas con contrasena `43315685`.
 
 ## Que incluye
 
-- Vista de PC con tabla de reparto.
-- Vista de celular con tarjetas faciles de tocar.
 - Sin usuarios, login ni Firebase.
 - Guardado local en el navegador.
+- Vista de PC con tabla de reparto.
+- Vista de celular con tarjetas faciles de tocar.
 - Clientes por dia con kg de pan, en contra, efectivo, MP, otros productos y observacion.
 - Cierre superior con Total vendido, Efectivo teorico, Efectivo real, Gastos, Diferencia y Deuda.
 - Boton **Nuevo dia +**.
@@ -37,7 +44,7 @@ Si el dia actual es 10/07 y apretas **Nuevo dia +**, se crea el 11/07.
 
 Al crear el nuevo dia:
 
-- Se copian los mismos clientes.
+- Se copian los mismos clientes del dia anterior.
 - Se copian solamente los kg de pan.
 - Facturas, prepizzas, otros, efectivo, MP y observaciones vuelven a 0.
 - La columna `en contra` se carga con la `cuenta` del dia anterior.
