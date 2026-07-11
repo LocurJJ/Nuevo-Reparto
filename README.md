@@ -17,14 +17,15 @@ Programa de reparto para Panaderia Josue, rehecho sin usuarios y con paginas sep
 - Vista de celular con tarjetas faciles de tocar.
 - Productos y clientes se agregan desde Configuracion.
 - Precio especial de pan y factura por cliente.
-- Clientes por dia con kg de pan, en contra, efectivo, MP, otros productos y observacion.
+- Clientes por dia con kg de pan, debe, efectivo, MP, cuenta, otros, facturas, observacion y en contra.
+- Click en el nombre del cliente para cargar rapidamente lo que pago en efectivo.
 - Cierre superior con Total vendido, Efectivo teorico, Efectivo real, Gastos, Diferencia y Deuda.
 - Boton **Nuevo dia +**.
 - Exportacion e importacion de respaldo en JSON.
 
 ## Configuracion
 
-En Productos se cargan precios generales, por ejemplo Pan, Factura, Prepizzas o Pan rallado.
+En Productos se cargan precios generales, por ejemplo Pan y Factura.
 
 En Clientes se cargan:
 
@@ -42,7 +43,7 @@ Si el precio especial queda vacio o en 0, Reparto usa el precio general del prod
 
 Por cliente:
 
-- `Venta del dia = kg * precio kg pan + facturas * precio factura + otros + prepizzas + pan rallado + pan para miga`
+- `Venta del dia = kg * precio kg pan + facturas * precio factura + otros`
 - `Debe = venta del dia + en contra`
 - `Cuenta = debe - efectivo - MP`
 
@@ -64,7 +65,7 @@ Al crear el nuevo dia:
 
 - Se copian los mismos clientes del dia anterior.
 - Se copian solamente los kg de pan.
-- Facturas, prepizzas, otros, efectivo, MP y observaciones vuelven a 0.
+- Facturas, otros, efectivo, MP y observaciones vuelven a 0.
 - La columna `en contra` se carga con la `cuenta` del dia anterior.
 
 Ejemplo: si el 10/07 un cliente debia $30.000, pago $10.000 y quedo una cuenta de $20.000, el 11/07 aparece `en contra = $20.000`.
